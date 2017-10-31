@@ -3,10 +3,11 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { CommonModule } from '@angular/common';
 import { UserService } from './user.service';
+import { AuthenticatedGuard } from './authenticated.guard';
 
 @NgModule({
   imports: [CommonModule, HttpClientModule],
   declarations: [],
-  providers: [UserService]
+  providers: [UserService, AuthenticatedGuard]
 })
 export class CoreModule {}

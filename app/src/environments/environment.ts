@@ -9,5 +9,5 @@ export const environment = {
     accessToken: 'niboAngular.accessToken',
     authenticatedUser: 'niboAngular.lastAuthenticatedUser'
   },
-  baseUrl: 'http://localhost:5000/api/'
+  baseUrl: 'http://localhost:5000/api'
 };

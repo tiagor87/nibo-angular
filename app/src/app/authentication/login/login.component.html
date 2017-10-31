@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-xs-12 col-md-6 col-md-offset-3">
+    <form [formGroup]="loginForm" (submit)="signIn()" class="panel panel-default">
+      <div class="panel-heading">
+        Login
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" formControlName="email">
+          <small class="text-muted text-error">Inform a valid email</small>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" class="form-control" formControlName="password">
+          <small class="text-muted text-error">Inform a valid password</small>
+        </div>
+      </div>
+      <div class="panel-footer">
+        <button class="btn btn-primary" [disabled]="loginForm.invalid">
+          SignIn
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

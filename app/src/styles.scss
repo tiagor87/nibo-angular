@@ -1,0 +1,11 @@
+/* You can add global styles to this file, and also import other style files */
+.form-control.ng-dirty.ng-invalid + .text-error {
+  visibility: visible;
+}
+.text-error {
+  color: red;
+  visibility: hidden;
+}
+.form-control.ng-dirty.ng-invalid {
+  border-color: red;
+}

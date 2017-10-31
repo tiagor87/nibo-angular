@@ -13,9 +13,8 @@ import { Subscription, Observable } from 'rxjs/';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  private subscription: Subscription;
-  authenticatedUser$: Observable<User>;
   loginForm: FormGroup;
+  subscription: Subscription;
   constructor(
     private router: Router,
     private fb: FormBuilder,
@@ -24,18 +23,22 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
-    this.authenticatedUser$ = this.userService.user$.do(user =>
-      this.loginForm.setValue(user)
-    );
-    this.subscription = this.userService.token$.subscribe(token => {
-      if (token) {
-        this.router.navigate(['admin']);
-      }
-    });
+    this.subscription = this.userService.user$
+      .do(user => this.loginForm.setValue(user))
+      .subscribe(() => {});
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  signIn() {
+    this.userService.signIn(this.loginForm.value).subscribe(
+      () => {
+        alert('User authenticated.');
+      },
+      error => alert(error.message)
+    );
   }
 
   private createForm() {

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { User } from '../shared/user';
 import { Observable, BehaviorSubject } from 'rxjs/';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable()
 export class UserService {
@@ -20,8 +21,8 @@ export class UserService {
 
   signIn(user: User) {
     return this.httpClient
-      .post<string>(`${environment.baseUrl}`, user)
-      .do(token => {
+      .post<{ token: string }>(`${environment.baseUrl}/authentication`, user)
+      .do(({ token }) => {
         this.setToken(token);
         this.token.next(token);
       })
@@ -33,22 +34,25 @@ export class UserService {
 
   validateToken() {
     const token = this.getToken();
-    return this.httpClient.get<boolean>(
-      `${environment.baseUrl}/authentication`,
-      {}
-    );
+    return this.httpClient
+      .get<{ isValid: boolean }>(
+        `${environment.baseUrl}/authentication/${token}`
+      )
+      .map(data => data.isValid);
   }
 
   private getUser() {
     const userJSON = window.localStorage.getItem(
       environment.storage.authenticatedUser
     );
-    return userJSON
+    const user = userJSON
       ? JSON.parse(userJSON)
       : {
           email: '',
           password: ''
         };
+    console.log(user);
+    return user;
   }
 
   private setUser(user: User) {
