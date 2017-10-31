@@ -10,22 +10,15 @@ import { HttpParams } from '@angular/common/http';
 export class UserService {
   private user: BehaviorSubject<User>;
   user$: Observable<User>;
-  private token: BehaviorSubject<string>;
-  token$: Observable<string>;
   constructor(private httpClient: HttpClient) {
     this.user = new BehaviorSubject<User>(this.getUser());
     this.user$ = this.user.asObservable();
-    this.token = new BehaviorSubject<string>(this.getToken());
-    this.token$ = this.token.asObservable();
   }
 
   signIn(user: User) {
     return this.httpClient
       .post<{ token: string }>(`${environment.baseUrl}/authentication`, user)
-      .do(({ token }) => {
-        this.setToken(token);
-        this.token.next(token);
-      })
+      .do(({ token }) => this.setToken(token))
       .do(() => {
         this.setUser(user);
         this.user.next(user);
