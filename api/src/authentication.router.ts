@@ -1,12 +1,5 @@
 import * as express from 'express';
-
-const users = [
-  {
-    email: 'tiago@nibo.com.br',
-    password: '123456',
-    token: 'AccessToken'
-  }
-];
+import { users } from './user.router';
 
 export const authRouter = express.Router();
 

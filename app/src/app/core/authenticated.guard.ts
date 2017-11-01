@@ -4,17 +4,19 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot
 } from '@angular/router';
+
+import { AuthenticationService } from './authentication.service';
+
 import { Observable } from 'rxjs/Observable';
-import { UserService } from './user.service';
 
 @Injectable()
 export class AuthenticatedGuard implements CanActivate {
-  constructor(private userService: UserService) {}
+  constructor(private authenticationService: AuthenticationService) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-    return this.userService.validateToken();
+    return this.authenticationService.validateToken();
   }
 }

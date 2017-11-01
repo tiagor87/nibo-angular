@@ -1,0 +1,10 @@
+<form *ngIf="user$ | async as user">
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" class="form-control" [value]="user.email">
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" class="form-control" [value]="user.password">
+  </div>
+</form>

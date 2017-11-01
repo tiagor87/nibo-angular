@@ -1,3 +1,24 @@
-<p>
-  administration works!
-</p>
+<div class="navbar navbar-default">
+  <div class="navbar-brand">
+    Brand
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="row form-group">
+    <div class="col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2">
+      <ul class="nav nav-pills">
+        <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <a routerLink=".">Dashboard</a>
+        </li>
+        <li routerLinkActive="active">
+          <a routerLink="users">Users</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <main class="row form-group">
+    <div class="col-xs-12">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

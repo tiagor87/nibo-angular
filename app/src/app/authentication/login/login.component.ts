@@ -2,8 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { UserService } from '../../core/user.service';
 import { User } from '../../shared/user';
+import { AuthenticationService } from '../../core/authentication.service';
+import { MessagesService } from '../../core/messages.service';
 
 import { Subscription, Observable } from 'rxjs/';
 
@@ -14,31 +15,42 @@ import { Subscription, Observable } from 'rxjs/';
 })
 export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
-  subscription: Subscription;
+  userSubscription: Subscription;
+  tokenSubscription: Subscription;
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private userService: UserService
+    private authenticationService: AuthenticationService,
+    private messagesService: MessagesService
   ) {}
 
   ngOnInit() {
     this.createForm();
-    this.subscription = this.userService.user$
+    this.userSubscription = this.authenticationService.user$
       .do(user => this.loginForm.setValue(user))
       .subscribe(() => {});
+    this.tokenSubscription = this.authenticationService.token$.subscribe(
+      token => {
+        this.messagesService.success('Welcome, you are now authenticated');
+        this.router.navigate(['admin']);
+      },
+      error => this.messagesService.error(error.message)
+    );
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.userSubscription.unsubscribe();
+    this.tokenSubscription.unsubscribe();
   }
 
   signIn() {
-    this.userService.signIn(this.loginForm.value).subscribe(
-      () => {
-        alert('User authenticated.');
-      },
-      error => alert(error.message)
-    );
+    this.authenticationService
+      .signIn(this.loginForm.value)
+      .subscribe(
+        () =>
+          this.messagesService.success('Welcome, you are now authenticated'),
+        error => alert(error.message)
+      );
   }
 
   private createForm() {

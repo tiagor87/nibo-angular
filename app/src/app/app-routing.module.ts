@@ -7,13 +7,19 @@ const routes: Routes = [
   {
     path: '',
     component: AppComponent,
-    loadChildren: './authentication/authentication.module#AuthenticationModule'
-  },
-  {
-    path: 'admin',
-    component: AppComponent,
-    canActivate: [AuthenticatedGuard],
-    loadChildren: './administration/administration.module#AdministrationModule'
+    children: [
+      {
+        path: '',
+        loadChildren:
+          './authentication/authentication.module#AuthenticationModule'
+      },
+      {
+        path: 'admin',
+        canActivate: [AuthenticatedGuard],
+        loadChildren:
+          './administration/administration.module#AdministrationModule'
+      }
+    ]
   }
 ];
 
